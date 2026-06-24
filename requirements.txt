@@ -1,0 +1,7 @@
+openai
+pydantic
+sqlalchemy
+motor
+pymongo
+python-dotenv
+psycopg2-binary
