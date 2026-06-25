@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 class MessageRequest(BaseModel):
-    identifier: str
+    phone_number: str = None
     channel: str = "WHATSAPP"
     message: str
 

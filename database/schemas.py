@@ -1,18 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any, List
 from datetime import datetime
-from enum import Enum
-
-class KYCStatus(str, Enum):
-    PENDING = 'PENDING'
-    PARTIAL = 'PARTIAL'
-    VERIFIED = 'VERIFIED'
-    REJECTED = 'REJECTED'
-
-class RiskTier(str, Enum):
-    LOW = 'LOW'
-    MEDIUM = 'MEDIUM'
-    HIGH = 'HIGH'
+from constants.enums import KYCStatus, RiskTier
 
 class CustomerProfile(BaseModel):
     customer_id: int
