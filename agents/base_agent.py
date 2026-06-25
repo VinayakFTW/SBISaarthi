@@ -27,9 +27,11 @@ class BaseAgent:
         ]
         
         if context:
+            # Mask context as well to prevent leakage backwards
+            masked_context = DataMasker.mask(json.dumps(context))
             messages.append({
                 "role": "system", 
-                "content": f"Current Context: {json.dumps(context)}"
+                "content": f"Current Context: {masked_context}"
             })
             
         messages.append({"role": "user", "content": masked_message})
@@ -49,7 +51,9 @@ class BaseAgent:
                 function_name = tool_call.function.name
                 function_to_call = self.tool_map.get(function_name)
                 if function_to_call:
-                    function_args = json.loads(tool_call.function.arguments)
+                    # Unmask the arguments before passing to actual tool
+                    unmasked_args_str = DataMasker.unmask(tool_call.function.arguments)
+                    function_args = json.loads(unmasked_args_str)
                     function_response = function_to_call(**function_args)
                     
                     messages.append(response_message)

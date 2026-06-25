@@ -1,9 +1,9 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class MessageRequest(BaseModel):
-    customer_id: str
+    identifier: str
     channel: str = "WHATSAPP"
-    session_id: str = None
     message: str
 
 class MessageResponse(BaseModel):

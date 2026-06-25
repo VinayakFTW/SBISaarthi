@@ -5,7 +5,6 @@ class UIDAIAdapter:
         self.api_key = os.getenv("UIDAI_API_KEY")
 
     def initiate_ekyc(self, uid: str, consent: bool, purpose: str) -> dict:
-        print(f"Calling UIDAI with UID: {uid}...")
         return {
             "txn_id": "tx123", 
             "status": "OTP_SENT"
