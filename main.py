@@ -1,39 +1,29 @@
+from fastapi import FastAPI, HTTPException
 from database.postgres import init_db
+from models.message_model import MessageRequest, MessageResponse
 from agents.orchestrator import Orchestrator
-from core.event_bus import event_bus
-# pyrefly: ignore [missing-import]
-from dotenv import load_dotenv
+import uvicorn
 
-load_dotenv()
+app = FastAPI(title="SBI Saarthi API Gateway")
+orchestrator = Orchestrator()
 
-def main():
+@app.on_event("startup")
+def on_startup():
     print("Initializing Database...")
     init_db()
-    
-    print("Initializing Orchestrator...")
-    orchestrator = Orchestrator()
-    
-    #user session
-    print("\n--- Starting Session ---")
-    customer_id = "cust_001"
-    session_id = orchestrator.start_session(customer_id, channel="WHATSAPP")
-    print(f"Session started: {session_id}")
-    
-    #user msg
-    message = "I want to open an account"
-    print(f"\nUser: {message}")
-    event_bus.publish("USER_MESSAGE", {
-        "session_id": session_id,
-        "message": message
-    })
-    
-    #state
-    message = "My Aadhaar is 1234-5678-9012"
-    print(f"\nUser: {message}")
-    event_bus.publish("USER_MESSAGE", {
-        "session_id": session_id,
-        "message": message
-    })
 
-if __name__ == "__main__":
-    main()
+
+@app.post("/chat", response_model=MessageResponse)
+def chat_endpoint(req: MessageRequest):
+    if not req.session_id:
+        session_id = orchestrator.start_session(req.customer_id, req.channel)
+    else:
+        session_id = req.session_id
+
+    response_text, new_state = orchestrator.process_message(session_id, req.message)
+    
+    return MessageResponse(
+        session_id=session_id,
+        response=response_text,
+        current_state=new_state
+    )
