@@ -1,6 +1,7 @@
 from database.postgres import init_db
 from agents.orchestrator import Orchestrator
 from core.event_bus import event_bus
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -12,13 +13,13 @@ def main():
     print("Initializing Orchestrator...")
     orchestrator = Orchestrator()
     
-    # Simulate a user session
+    #user session
     print("\n--- Starting Session ---")
     customer_id = "cust_001"
     session_id = orchestrator.start_session(customer_id, channel="WHATSAPP")
     print(f"Session started: {session_id}")
     
-    # Simulate first user message
+    #user msg
     message = "I want to open an account"
     print(f"\nUser: {message}")
     event_bus.publish("USER_MESSAGE", {
@@ -26,7 +27,7 @@ def main():
         "message": message
     })
     
-    # Simulate next state
+    #state
     message = "My Aadhaar is 1234-5678-9012"
     print(f"\nUser: {message}")
     event_bus.publish("USER_MESSAGE", {

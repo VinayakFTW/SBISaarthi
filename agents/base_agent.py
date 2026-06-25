@@ -1,12 +1,14 @@
 import os
+# pyrefly: ignore [missing-import]
 from openai import OpenAI
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 import json
 
 load_dotenv()
 
 class BaseAgent:
-    def __init__(self, name: str, system_prompt: str, model: str = "gpt-4o"):
+    def __init__(self, name: str, system_prompt: str, model: str = "auto"):
         self.name = name
         self.system_prompt = system_prompt
         self.model = model
