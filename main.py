@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from controllers.chat_endpoints import chat
+from controllers.chat_controllers.chat_controller import chat
 from database.validation.message_model import MessageRequest, MessageResponse
 
 app = FastAPI(title="SBI Saarthi API Gateway")
