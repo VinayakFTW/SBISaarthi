@@ -1,12 +1,12 @@
 import requests
 
-def typing_indicator(phone_number, API_KEY, API_BASE_URL, session_id=None,chat_id=None):
+def typing_indicator(state,API_KEY, API_BASE_URL, session_id=None,chat_id=None):
     headers = {
         "X-API-Key": API_KEY
     }
     payload = {
         "sessionId": chat_id,
-        "state": "typing"
+        "state": state
     }
     if not session_id or not chat_id:
         return {"error": "Session ID and Chat ID are required to send typing indicator."}
