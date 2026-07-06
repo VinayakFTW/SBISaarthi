@@ -1,10 +1,11 @@
 import os
+import certifi
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
 load_dotenv()
- 
-client = MongoClient(os.getenv("MONGO_CONNECTION_STRING"))
+
+client = MongoClient(os.getenv("MONGO_CONNECTION_STRING"), tlsCAFile=certifi.where())
 db = client['sbi_saarthi']
 session_collection = db['sessions']
 

@@ -90,7 +90,7 @@ class Orchestrator:
                 if "otp" in response_text.lower() or "sent" in response_text.lower():
                      if self.state_machine.can_transition(session["workflow_state"], State.KYC_VERIFIED.value):
                          session["workflow_state"] = State.KYC_VERIFIED.value
-                         from database.postgres import verify_kyc_and_create_account
+                         from database.postgres_helpers import verify_kyc_and_create_account
                          verify_kyc_and_create_account(session["customer_id"])
                          
                 final_responses.append(response_text)

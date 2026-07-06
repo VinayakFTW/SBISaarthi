@@ -206,6 +206,9 @@ stateDiagram-v2
 4. Install dependencies: `pip install -r requirements.txt`
 5. Copy `.env.example` to `.env` and configure your keys and DB URLs.
 6. Initialize Database (Ensure Postgres and Mongo are running).
+   ```bash
+   python -m database.setup_db
+   ```
 
 ---
 
