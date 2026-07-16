@@ -4,7 +4,7 @@ from fastapi import BackgroundTasks, Request
 from agents.orchestrator import Orchestrator
 from database.mongo_helpers import get_active_session_for_customer
 from middlewares.dependencies import validate_customer
-from database.validation.message_model import MessageRequest
+from database.validation.message_model import MessageRequest, MessageResponse
 from controllers.openwa_controllers.resolve_chat_id_to_phone import resolve_chat_id_to_phone
 from controllers.openwa_controllers.get_wa_session import get_wa_session_id
 
@@ -44,9 +44,13 @@ async def process_and_reply(sender_id: str, phone_number: str, message_body: str
     async with httpx.AsyncClient() as client:
         try:
             await client.post(url, json=payload, headers=headers)
+            return MessageResponse(session_id=active_session,
+                                    response=response_text, 
+                                    current_state=new_state)
         except Exception as e:
-            print(f"Failed to send WhatsApp message: {str(e)}")
-
+            return MessageResponse(session_id=active_session,
+                                    response=f"Failed to send WhatsApp message: {str(e)}", 
+                                    current_state=new_state)
 
 async def openwa_webhook(request: Request, background_tasks: BackgroundTasks):
     """

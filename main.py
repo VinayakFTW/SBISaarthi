@@ -15,5 +15,5 @@ app.add_api_route(
 app.add_api_route(
     path="/api/v1/whatsapp/webhook",
     endpoint=openwa_webhook,
-    methods=["POST"]
+    methods=["POST"],
 )

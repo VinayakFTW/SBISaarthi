@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Optional
 
 class MessageRequest(BaseModel):
     phone_number: str = None
